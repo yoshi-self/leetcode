@@ -11,34 +11,24 @@ end
 # @param {ListNode} l2
 # @return {ListNode}
 def add_two_numbers(l1, l2)
-    n1 = list_to_i(l1)
-    n2 = list_to_i(l2)
-    i_to_list(n1 + n2)
-end
-
-def list_to_i(l)
-    num = 0
-    factor = 1
-    while l != nil
-        tmp = factor * l.val
-        num += tmp
-        factor *= 10
-        l = l.next
-    end
-    num
-end
-
-def i_to_list(n)
-    first = ListNode.new
-    l = first
+    answer = ListNode.new
+    cur = answer
+    carry = 0
     loop do
-        l.val = n % 10
-        n /= 10
-        if n == 0
+        n1 = l1.nil? ? 0 : l1.val
+        n2 = l2.nil? ? 0 : l2.val
+        tmp = n1 + n2 + carry
+        carry = tmp >= 10 ? 1 : 0
+        cur.val = tmp % 10
+        if (l1.nil? || l1.next.nil?) && (l2.nil? || l2.next.nil?) && carry == 0
+            cur.next = nil
             break
+        else
+            cur.next = ListNode.new
+            l1 = l1.nil? ? nil : l1.next
+            l2 = l2.nil? ? nil : l2.next
+            cur = cur.next
         end
-        l.next = ListNode.new
-        l = l.next
     end
-    first
+    answer
 end
